@@ -10,8 +10,10 @@ async function bootstrap() {
 
     app.use(cors(corsOptions));
 
+    app.setGlobalPrefix('api/v1');
+
     const document = SwaggerModule.createDocument(app, swaggerConfig);
-    SwaggerModule.setup('api', app, document);
+    SwaggerModule.setup('swagger', app, document);
 
     await app.listen(3000);
 }

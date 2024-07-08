@@ -69,7 +69,11 @@ export class CustomersService {
                         { expiresIn: EXPIRES_TIME },
                     );
 
-                    return { message: 'Login exitoso', token: token };
+                    return {
+                        message: 'Login exitoso',
+                        token: token,
+                        idUserName: customer.id,
+                    };
                 } else {
                     throw new HttpException(
                         'Credenciales inválidas',

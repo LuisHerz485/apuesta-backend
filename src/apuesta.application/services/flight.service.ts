@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateFlightDto } from 'src/apuesta.application.dto';
 import { Flight } from 'src/apuesta.domain.entities/models/flight.entity';
+import { Seat } from 'src/apuesta.domain.entities/models/seat.entity';
 import { FindOneOptions, Repository } from 'typeorm';
 
 @Injectable()
@@ -9,6 +10,8 @@ export class FlightsService {
     constructor(
         @InjectRepository(Flight)
         private readonly flightRepository: Repository<Flight>,
+        @InjectRepository(Seat)
+        private readonly seatRepository: Repository<Seat>,
     ) {}
 
     async releaseFlightReservation(
@@ -52,6 +55,10 @@ export class FlightsService {
 
     public async findByFlightNumber(flightNumber: string): Promise<Flight> {
         return await this.flightRepository.findOneBy({ flightNumber });
+    }
+
+    public async findSeatByFlight(idFlight: number): Promise<Seat> {
+        return await this.seatRepository.findOneBy({ idFlight, status: 1 });
     }
 
     public async create(request: CreateFlightDto) {

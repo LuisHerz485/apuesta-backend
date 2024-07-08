@@ -12,6 +12,7 @@ import { CreateFlightDto, Result } from 'src/apuesta.application.dto';
 import { PaginatedResponse } from 'src/apuesta.application.dto/global/paginated-result.dto';
 import { FlightsService } from 'src/apuesta.application/services/flight.service';
 import { Flight } from 'src/apuesta.domain.entities/models/flight.entity';
+import { Seat } from 'src/apuesta.domain.entities/models/seat.entity';
 
 @ApiTags('flights')
 @Controller('flights')
@@ -87,5 +88,34 @@ export class FlightsController {
             );
         }
         return new Result(HttpStatus.OK, flight);
+    }
+
+    @Get('listSeats/:idFlight')
+    @ApiOperation({ summary: 'Obtener asientos libres en vuelo' })
+    @ApiParam({ name: 'idFlight', description: 'ID del vuelo a buscar' })
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'Éxito al obtener el vuelo',
+    })
+    @ApiResponse({
+        status: HttpStatus.NOT_FOUND,
+        description: 'Vuelo no encontrado',
+    })
+    @ApiResponse({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        description: 'Error interno del servidor',
+    })
+    async findSeatsByFlight(
+        @Param('idFlight') idFlight: number,
+    ): Promise<Result<Seat>> {
+        const seats = await this.flightService.findSeatByFlight(idFlight);
+
+        if (!seats) {
+            throw new HttpException(
+                'Vuelo no encontrado o cerrado',
+                HttpStatus.NOT_FOUND,
+            );
+        }
+        return new Result(HttpStatus.OK, seats);
     }
 }
