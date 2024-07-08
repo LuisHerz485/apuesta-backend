@@ -61,3 +61,7 @@ $ redis-server
 # development
 $ npm run start
 ```
+
+## Pruebas Individuales con Swagger
+
+Se puede probar los endpoints con el link http://localhost:3000/swagger#/ una vez iniciado proyecto,
