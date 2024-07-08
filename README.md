@@ -10,7 +10,7 @@
 
 Prueba tecnica para Apuesta total, realizada con NestJs con un proceso de compra de boletos de avion
 
-a. Proyecto desarrollador bajo arquitectura DDD con Microservicios, para mejorar la flexibilidad, adaptabilidad y mantenibilidad de todo el proyecto. Asi mismo, Un mejor entendimiento del dominio y una comunicación clara pueden ayudar a identificar y mitigar riesgos potenciales más temprano en el proceso de desarrollo.
+a. Proyecto desarrollador bajo la combinacion de arquitectura DDD con Microservicios, para mejorar la flexibilidad, adaptabilidad y mantenibilidad de todo el proyecto. Asi mismo, Un mejor entendimiento del dominio y una comunicación clara pueden ayudar a identificar y mitigar riesgos potenciales más temprano en el proceso de desarrollo.
 
 ## Buenas practicas aplicadas
 
