@@ -56,6 +56,11 @@ export class FlightsController {
         description: 'Error interno del servidor',
     })
     async findAll(): Promise<PaginatedResponse<Flight>> {
+        //Simular retraso para probar loading en front
+        await new Promise(resolve =>
+            setTimeout(resolve, Math.random() * 1000 + 2000),
+        );
+
         const flights = await this.flightService.findAll();
 
         return new PaginatedResponse<Flight>(
@@ -107,8 +112,8 @@ export class FlightsController {
     })
     async findSeatsByFlight(
         @Param('idFlight') idFlight: number,
-    ): Promise<Result<Seat>> {
-        const seats = await this.flightService.findSeatByFlight(idFlight);
+    ): Promise<Result<Seat[]>> {
+        const seats = await this.flightService.findSeatsByFlight(idFlight);
 
         if (!seats) {
             throw new HttpException(

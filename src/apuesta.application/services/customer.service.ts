@@ -10,10 +10,13 @@ import {
     EXPIRES_TIME,
     JWT_PASS,
 } from 'src/apuesta.infraestructure.cross.cuting/constants/jwt.const';
+import { Seat } from 'src/apuesta.domain.entities/models/seat.entity';
 
 @Injectable()
 export class CustomersService {
     constructor(
+        @InjectRepository(Seat)
+        private readonly seatRepository: Repository<Seat>,
         @InjectRepository(Customer)
         private readonly customerRepository: Repository<Customer>,
     ) {}
@@ -72,7 +75,11 @@ export class CustomersService {
                     return {
                         message: 'Login exitoso',
                         token: token,
-                        idUserName: customer.id,
+                        data: {
+                            idUserName: customer.id,
+                            userName: customer.userName,
+                            rol: 'Cliente Premium',
+                        },
                     };
                 } else {
                     throw new HttpException(
@@ -102,9 +109,9 @@ export class CustomersService {
                 throw new HttpException('No existe', HttpStatus.NOT_FOUND);
             }
 
-            customerExist.amount -= price;
+            customerExist.amount = customerExist.amount - price;
 
-            this.customerRepository.save(customerExist);
+            await this.customerRepository.save(customerExist);
         } catch (error) {
             throw new HttpException(
                 `Error : ${error}`,
@@ -121,9 +128,23 @@ export class CustomersService {
                 throw new HttpException('No existe', HttpStatus.NOT_FOUND);
             }
 
-            customerExist.amount += price;
+            customerExist.amount = customerExist.amount + price;
 
-            this.customerRepository.save(customerExist);
+            await this.customerRepository.save(customerExist);
+        } catch (error) {
+            throw new HttpException(
+                `Error : ${error}`,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+    }
+
+    public async getMyTickets(idCustomer: number): Promise<Seat[]> {
+        try {
+            const options: FindOneOptions<Seat> = {
+                where: { idCustomer },
+            };
+            return await this.seatRepository.find(options);
         } catch (error) {
             throw new HttpException(
                 `Error : ${error}`,

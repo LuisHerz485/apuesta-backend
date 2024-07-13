@@ -57,8 +57,10 @@ export class FlightsService {
         return await this.flightRepository.findOneBy({ flightNumber });
     }
 
-    public async findSeatByFlight(idFlight: number): Promise<Seat> {
-        return await this.seatRepository.findOneBy({ idFlight, status: 1 });
+    public async findSeatsByFlight(idFlight: number): Promise<Seat[]> {
+        return await this.seatRepository.find({
+            where: { idFlight, status: 1 },
+        });
     }
 
     public async create(request: CreateFlightDto) {
